@@ -5,10 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.squareup.picasso.Picasso;
 
 import br.com.osmarjunior.notepadshifpapp.api.NotaApi;
 import br.com.osmarjunior.notepadshifpapp.model.Nota;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText etTitulo;
     private EditText etTexto;
+    private ImageView ivLogo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
 
         etTitulo = (EditText) findViewById(R.id.etTitulo);
         etTexto = (EditText) findViewById(R.id.etTexto);
+        ivLogo = (ImageView) findViewById(R.id.ivLogo);
+
+        Picasso.with(this)
+                .load("http://s3.amazonaws.com/design_images/images/1129/Lobo.png?1346204175")
+                .placeholder(R.drawable.search)
+                .error(R.drawable.search)
+                .into(ivLogo);
     }
     public void pesquisar(View v){
         NotaApi api = getRetrofit().create(NotaApi.class);
