@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
         Picasso.with(this)
                 .load("http://s3.amazonaws.com/design_images/images/1129/Lobo.png?1346204175")
-                .placeholder(R.drawable.search)
-                .error(R.drawable.search)
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.erro)
                 .into(ivLogo);
     }
     public void pesquisar(View v){
