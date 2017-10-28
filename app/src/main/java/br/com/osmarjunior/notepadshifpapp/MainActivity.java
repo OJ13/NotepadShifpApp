@@ -1,5 +1,6 @@
 package br.com.osmarjunior.notepadshifpapp;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -46,8 +47,39 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-    public void salvar(View v){
+    public void salvar(final View v){
+        final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, "", "Aguarde! Estamos gravando os seus dados", true);
 
+        dialog.show();
+
+        NotaApi api = getRetrofit().create(NotaApi.class);
+        Nota nota = new  Nota();
+        nota.setTitulo(etTitulo.getText().toString());
+        nota.setDescricao(etTexto.getText().toString());
+
+        api.salvar(nota)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(MainActivity.this, "Nota Cadastrada com Sucesso!", Toast.LENGTH_LONG).show();
+                        limpar();
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        dialog.dismiss();
+                        Toast.makeText(MainActivity.this, "Ops! Deu ruim ao Cadastrar!", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+    public void limpar(View v){
+        limpar();
+    }
+
+    private void limpar() {
+        etTitulo.setText("");
+        etTexto.setText("");
     }
     private Retrofit getRetrofit(){
         OkHttpClient client = new OkHttpClient.Builder()
